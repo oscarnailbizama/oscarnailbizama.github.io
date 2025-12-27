@@ -4,577 +4,206 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>oscarnailbizama</title>
-    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/icon1.ico">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        body {
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             background: white;
             color: black;
-            font-family: Times, "Times New Roman", serif;
-            transition: background-color 3s ease, color 3s ease;
-            overflow-x: hidden;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.3s, color 0.3s;
         }
-
-        body.phase2-active {
+        
+        body.inverted {
             background: black;
             color: white;
         }
-
-        body.phase3-active {
-            overflow: hidden;
-        }
-
-        /* PHASES 1 & 2: Same container, morphing elements */
-        .main-content {
-            padding: 40px;
-            transition: padding 3s ease, opacity 1.5s ease;
-        }
-
-        body.phase2-active .main-content {
-            padding: 80px 60px;
-        }
-
-        body.phase3-active .main-content {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .main-content h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            line-height: 1.2;
-            transition: all 1.5s ease;
-        }
-
-        body.phase2-active .main-content h1 {
-            font-size: 5rem;
-            font-weight: 400;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-            line-height: 0.9;
-            margin-bottom: 0.2em;
-            letter-spacing: -0.02em;
-        }
-
-        .main-content .subtitle {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            transition: all 1.5s ease;
-        }
-
-        body.phase2-active .main-content .subtitle {
-            font-size: 4rem;
-            font-weight: 300;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-            margin-bottom: 1.5em;
-            letter-spacing: 0.01em;
-        }
-
-        .main-content .description {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            transition: all 1.5s ease;
-        }
-
-        body.phase2-active .main-content .description {
-            font-size: 2rem;
-            line-height: 1.3;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 300;
-            margin-bottom: 2em;
-        }
-
-        .main-content .info {
-            font-size: 1.5rem;
-            line-height: 1.8;
-            transition: all 1.5s ease;
-        }
-
-        body.phase2-active .main-content .info {
-            font-size: 2rem;
-            line-height: 1.5;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 300;
-        }
-
-        .main-content a {
-            color: #0000ff;
-            text-decoration: underline;
-            transition: color 3s ease;
-        }
-
-        body.phase2-active .main-content a {
-            color: #0066ff;
-        }
-
-        /* PHASE 3: Column layout */
-        .phase3 {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            transition: opacity 2s ease;
-        }
-
-        body.phase3-active .phase3 {
-            display: block;
-            opacity: 1;
-        }
-
-        /* Background carousel */
-        .bg-carousel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .bg-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .bg-slide.active {
-            opacity: 1;
-        }
-
-        /* Columns container */
-        .columns {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            height: 100vh;
-            width: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 300;
-        }
-
-        .column {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            padding: 40px 30px;
-        }
-
-        .column:last-child {
-            border-right: none;
-        }
-
-        .column-3-4 {
-            flex: 2;
-        }
-
-        .column-content {
-            font-size: 1.5rem;
-            line-height: 1.2;
-            white-space: pre-line;
-            transition: transform 0.1s linear;
-        }
-
-        .column-content a {
         
+        .container {
+            width: 100%;
+            height: 100vh;
+            padding: 0.8%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
-
-        /* RESPONSIVE DESIGN */
-
-        /* Pantallas verticales (9:16) o cuando no hay espacio horizontal suficiente */
-        @media (max-aspect-ratio: 4/3), (max-width: 1024px) {
-            /* Phase 3 - Columnas en vertical */
-            .columns {
-                flex-direction: column;
-                overflow-y: auto;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .column {
-                border-right: none;
-                padding: 25px 20px;
-                min-height: auto;
-            }
-
-            .column:last-child {
-                border-bottom: none;
-            }
-
-            .column-content {
-                font-size: 1.2rem;
-                line-height: 1.4;
-                transform: none !important;
-            }
-
-            .column-content a {
-                word-break: break-word;
-                display: inline-block;
-            }
+        
+        .grid {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1.3%;
+            position: relative;
         }
-
-        /* Tablets (portrait and landscape) */
-        @media (max-width: 1024px) {
-            .main-content {
-                padding: 30px 25px;
-            }
-
-            body.phase2-active .main-content {
-                padding: 50px 35px;
-            }
-
-            .main-content h1 {
-                font-size: 2rem;
-            }
-
-            body.phase2-active .main-content h1 {
-                font-size: 3.5rem;
-            }
-
-            .main-content .subtitle {
-                font-size: 1.5rem;
-            }
-
-            body.phase2-active .main-content .subtitle {
-                font-size: 2.5rem;
-            }
-
-            .main-content .description {
-                font-size: 1.2rem;
-            }
-
-            body.phase2-active .main-content .description {
-                font-size: 1.5rem;
-            }
-
-            .main-content .info {
-                font-size: 1.2rem;
-            }
-
-            body.phase2-active .main-content .info {
-                font-size: 1.5rem;
-            }
+        
+        .column {
+            position: relative;
+            height: 100%;
         }
-
-        /* Móviles grandes y tablets pequeñas */
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 25px 20px;
+        
+        .section-title {
+            position: absolute;
+            bottom: 11%;
+            left: 0;
+            cursor: pointer;
+            user-select: none;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .main-box {
+            position: absolute;
+            left: calc(((100% - 1.3%) / 6) + 1%);
+            right: 0;
+            bottom: calc(11% + 2rem + 1.3%);
+            top: 0;
+            overflow: hidden;
+            background: white;
+            transition: background 0.3s;
+        }
+        
+        body.inverted .main-box {
+            background: black;
+        }
+        
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel {
+            display: flex;
+            height: 100%;
+            position: absolute;
+            animation: scroll 60s linear infinite;
+        }
+        
+        .carousel img,
+        .carousel video {
+            height: 100%;
+            width: auto;
+            display: block;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
             }
-
-            body.phase2-active .main-content {
-                padding: 40px 25px;
-            }
-
-            .main-content h1 {
-                font-size: 1.8rem;
-            }
-
-            body.phase2-active .main-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .main-content .subtitle {
-                font-size: 1.3rem;
-                margin-bottom: 20px;
-            }
-
-            body.phase2-active .main-content .subtitle {
-                font-size: 2rem;
-                margin-bottom: 1em;
-            }
-
-            .main-content .description {
-                font-size: 1.1rem;
-                margin-bottom: 20px;
-            }
-
-            body.phase2-active .main-content .description {
-                font-size: 1.3rem;
-                margin-bottom: 1.5em;
-            }
-
-            .main-content .info {
-                font-size: 1.1rem;
-            }
-
-            body.phase2-active .main-content .info {
-                font-size: 1.3rem;
-            }
-
-            .column {
-                padding: 20px 15px;
-            }
-
-            .column-content {
-                font-size: 1.1rem;
+            100% {
+                transform: translateX(-50%);
             }
         }
-
-        /* Móviles pequeños */
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 20px 15px;
-            }
-
-            body.phase2-active .main-content {
-                padding: 30px 20px;
-            }
-
-            .main-content h1 {
-                font-size: 1.5rem;
-            }
-
-            body.phase2-active .main-content h1 {
-                font-size: 2rem;
-                line-height: 1.1;
-            }
-
-            .main-content .subtitle {
-                font-size: 1.1rem;
-                margin-bottom: 15px;
-            }
-
-            body.phase2-active .main-content .subtitle {
-                font-size: 1.5rem;
-                margin-bottom: 0.8em;
-            }
-
-            .main-content .description {
-                font-size: 1rem;
-                margin-bottom: 15px;
-                line-height: 1.5;
-            }
-
-            body.phase2-active .main-content .description {
-                font-size: 1.1rem;
-                margin-bottom: 1.2em;
-            }
-
-            .main-content .info {
-                font-size: 1rem;
-                line-height: 1.7;
-            }
-
-            body.phase2-active .main-content .info {
-                font-size: 1.1rem;
-            }
-
-            .column {
-                padding: 18px 12px;
-            }
-
-            .column-content {
-                font-size: 1rem;
-                line-height: 1.5;
-            }
-
-            .column-content a {
-                font-size: 0.95rem;
-                word-break: break-word;
-            }
+        
+        .info-container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 4%;
         }
-
-        /* Móviles extra pequeños */
-        @media (max-width: 360px) {
-            .main-content {
-                padding: 15px 12px;
-            }
-
-            body.phase2-active .main-content {
-                padding: 25px 15px;
-            }
-
-            .main-content h1 {
-                font-size: 1.3rem;
-            }
-
-            body.phase2-active .main-content h1 {
-                font-size: 1.7rem;
-            }
-
-            .main-content .subtitle {
-                font-size: 1rem;
-            }
-
-            body.phase2-active .main-content .subtitle {
-                font-size: 1.3rem;
-            }
-
-            .main-content .description {
-                font-size: 0.95rem;
-            }
-
-            body.phase2-active .main-content .description {
-                font-size: 1rem;
-            }
-
-            .main-content .info {
-                font-size: 0.95rem;
-            }
-
-            body.phase2-active .main-content .info {
-                font-size: 1rem;
-            }
-
-            .column {
-                padding: 15px 10px;
-            }
-
-            .column-content {
-                font-size: 0.95rem;
-            }
+        
+        .info-container a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .main-box.show-info .carousel-container {
+            display: none;
+        }
+        
+        .main-box.show-info .info-container {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <!-- PHASES 1 & 2: Same content, morphing styles -->
-    <div class="main-content">
-        <h1>Oscar Nail Bizama</h1>
-        <div class="subtitle">Graphic designer</div>
-        
-        <div class="description">
-            Specializing in typography, editorial design, 
-            silk-screen printing, web design and art direction.
+    <div class="container">
+        <div class="grid">
+            <div class="column">
+                <div class="section-title">oscar nail bizama</div>
+            </div>
+            <div class="column">
+                <div class="section-title" id="toggleBtn">about</div>
+            </div>
+            <div class="column"></div>
+            <div class="column"></div>
+            <div class="column"></div>
+            <div class="column"></div>
         </div>
         
-        <div class="info">
-            Based in Geneva CH-1206<br>
-            <a href="mailto:hi@oscarnailbizama.me">hi@oscarnailbizama.me</a><br>
-            <a href="tel:+41786021513">+41 78 602 15 13</a>
-        </div>
-    </div>
-
-    <!-- PHASE 3: Column layout -->
-    <div class="phase3">
-        <div class="bg-carousel">
-            <div class="bg-slide" style='background-image: url("1.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("2.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("3.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("4.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("bl1.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("6.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("7.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("8.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("9.jpg")'></div>
-            <div class="bg-slide" style='background-image: url("10.jpg")'></div>
-        </div>
-           
-        <div class="columns">
-            <div class="column column-1">
-                <div class="column-content" id="col1">oscar nail bizama</div>
+        <div class="main-box" id="mainBox">
+            <div class="carousel-container" id="carouselContainer">
+                <div class="carousel" id="carousel">
+                    <img src="/1.jpg" alt="Proyecto 1">
+                    <img src="/2.jpg" alt="Proyecto 2">
+                    <img src="/3.jpg" alt="Proyecto 3">
+                    <img src="/4.jpg" alt="Proyecto 4">
+                    <img src="/5.jpg" alt="Proyecto 5">
+                    <img src="/6.jpg" alt="Proyecto 6">
+                    <video src="/v1.mov" autoplay loop playsinline muted></video>
+                    <img src="/1.jpg" alt="Proyecto 1">
+                    <img src="/2.jpg" alt="Proyecto 2">
+                    <img src="/3.jpg" alt="Proyecto 3">
+                    <img src="/4.jpg" alt="Proyecto 4">
+                    <img src="/5.jpg" alt="Proyecto 5">
+                    <img src="/6.jpg" alt="Proyecto 6">
+                    <video src="/v1.mov" autoplay loop playsinline muted></video>
+                </div>
             </div>
-
-            <div class="column column-2">
-                <div class="column-content" id="col2">graphic designer</div>
-            </div>
-
-            <div class="column column-3-4">
-                <div class="column-content" id="col3">specializing in typography, editorial design, silk-screen printing, web design and art direction.</div>
-            </div>
-
-            <div class="column column-4">
-                <div class="column-content" id="col4">based in Geneva 
-CH-1206
-<a href="mailto:hi@oscarnailbizama.me">hi@oscarnailbizama.me</a>
-<a href="tel:+41786021513">+41 78 602 15 13</a></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let scrollY = 0;
-        let currentPhase = 1;
-
-        // Phase 2: Morph existing content
-        setTimeout(() => {
-            document.body.classList.add('phase2-active');
-            currentPhase = 2;
-        }, 3000);
-
-        // Phase 3: Switch to column layout
-        setTimeout(() => {
-            document.body.classList.add('phase3-active');
-            currentPhase = 3;
-            startCarousel();
-        }, 8000);
-
-        // Background carousel
-        function startCarousel() {
-            const slides = document.querySelectorAll('.bg-slide');
-            let currentSlide = 0;
-
-            slides[0].classList.add('active');
-
-            setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 4000);
-        }
-
-        // Scroll interaction for phase 3
-        window.addEventListener('wheel', (e) => {
-            if (currentPhase !== 3) return;
-            // Disable on vertical screens or small width
-            if (window.innerWidth <= 1024 || window.innerWidth / window.innerHeight < 4/3) return;
-
-            scrollY += e.deltaY * 0.5;
             
-            const col1 = document.getElementById('col1');
-            const col2 = document.getElementById('col2');
-            const col3 = document.getElementById('col3');
-            const col4 = document.getElementById('col4');
-
-            if (col1 && col2 && col3 && col4) {
-                col1.style.transform = `translateY(${scrollY}px)`;
-                col3.style.transform = `translateY(${scrollY}px)`;
-                col2.style.transform = `translateY(${-scrollY}px)`;
-                col4.style.transform = `translateY(${-scrollY}px)`;
+            <div class="info-container">
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>Graphic designer specializing in typography, editorial design, screen printing,<br>
+                    web design and art direction.</p><br>
+                CH-1206 Geneva<br><br>
+                <a href="mailto:hi@oscarnailbizama.me">hi@oscarnailbizama.me</a><br>
+                <a href="tel:+41786021513">+41 78 602 15 13</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        const mainBox = document.getElementById('mainBox');
+        const carouselContainer = document.getElementById('carouselContainer');
+        const body = document.body;
+        
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (mainBox.classList.contains('show-info')) {
+                mainBox.classList.remove('show-info');
+                toggleBtn.textContent = 'about';
+            } else {
+                mainBox.classList.add('show-info');
+                toggleBtn.textContent = 'gallery';
             }
         });
-
-        // Touch support for mobile
-        let touchStartY = 0;
-        window.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        });
-
-        window.addEventListener('touchmove', (e) => {
-            if (currentPhase !== 3) return;
-            // Disable on vertical screens or small width
-            if (window.innerWidth <= 1024 || window.innerWidth / window.innerHeight < 4/3) return;
-            
-            const touchY = e.touches[0].clientY;
-            const deltaY = touchStartY - touchY;
-            scrollY += deltaY * 0.3;
-            touchStartY = touchY;
-
-            const col1 = document.getElementById('col1');
-            const col2 = document.getElementById('col2');
-            const col3 = document.getElementById('col3');
-            const col4 = document.getElementById('col4');
-
-            if (col1 && col2 && col3 && col4) {
-                col1.style.transform = `translateY(${scrollY}px)`;
-                col3.style.transform = `translateY(${scrollY}px)`;
-                col2.style.transform = `translateY(${-scrollY}px)`;
-                col4.style.transform = `translateY(${-scrollY}px)`;
+        
+        document.addEventListener('click', function(e) {
+            if (!toggleBtn.contains(e.target) && 
+                !carouselContainer.contains(e.target) && 
+                !document.querySelector('.section-title:first-child').contains(e.target)) {
+                body.classList.toggle('inverted');
             }
         });
     </script>
