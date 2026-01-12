@@ -163,13 +163,44 @@
         .main-box.show-info .info-container {
             display: block;
         }
+
+        @media (max-width: 980px) {
+        .grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .column:nth-child(2) {
+            order: 4;
+        }
+        
+        .column:nth-child(3),
+        .column:nth-child(5),
+        .column:nth-child(6) {
+            display: none;
+        }
+        
+        .main-box {
+            left: 0;
+            right: 0;
+        }
+        
+        .info-text {
+            width: 100%;
+            padding: 0.8%;
+        }
+        
+        .info-photo {
+            display: none;
+        }
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="grid">
             <div class="column">
-                <div class="section-title">oscar nail bizama</div>
+                <div class="section-title">oscar&nbsp;nail&nbsp;bizama</div>
             </div>
             <div class="column">
                 <div class="section-title" id="toggleBtn">about</div>
